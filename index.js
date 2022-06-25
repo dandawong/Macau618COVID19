@@ -74,8 +74,8 @@ while ((dirent = dir.readSync()) !== null) {
     var reTraceStart = new RegExp('日期 時間 行程')
     var reTraceStart2 = new RegExp('二、 近期行程 :\s*')
     var reDateSpecial = new RegExp(/\d+月\d+\-/)
-    var reDate = new RegExp(/^\d+月\d+日\s+/)
-    var reTime = new RegExp(/^(全天|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
+    var reDate = new RegExp(/^\d+\s*月\d+\s*日\s+|^\d+\/\d+\/\d+|^\d+\/\d+/)
+    var reTime = new RegExp(/^(\d+:\d+|全天|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
 
     personInfo = {}
     personTrace = []
@@ -83,6 +83,8 @@ while ((dirent = dir.readSync()) !== null) {
     let traceStart = false;
     let currentDate = null
     let currentTime = null
+
+    // console.log(textList)
 
     textList.forEach(function (text, index) {
       let code = matchText(text, reCode, 1)
@@ -133,10 +135,6 @@ while ((dirent = dir.readSync()) !== null) {
         if (content.trim().length > 0 && currentDate != null) {
           let trace = {}
           trace.date = currentDate.trim()
-          if (currentTime == null) {
-            // console.log(textList)
-            // console.log(fileName, text)
-          }
           trace.time = currentTime.trim()
           trace.content = content.trim()
           personTrace.push(trace)
