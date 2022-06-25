@@ -1,11 +1,11 @@
 const fs = require('fs');
 const pdf = require('pdf-parse');
 
+// Input pdfs path
 const pdfPath = 'pdf'
-const pdfCount = 160
+const pdfCount = fs.readdirSync(pdfPath).filter(fileName => fileName.includes('.pdf')).length
 
-const dir = fs.opendirSync(pdfPath)
-
+// Utility function
 function matchText(target, regex, index) {
   let match = target.match(regex)
   if (match != null) {
@@ -14,6 +14,19 @@ function matchText(target, regex, index) {
     return null
   }
 }
+
+// Handle special case
+// case 29
+function fixSpecialCase(text) {
+  if (text.includes('29-618')) {
+    text = text.replace(/6月15\-\s+/gm, '6月15\-')
+    text = text.replace(/6月15\-18日/gm, '6月15\-18日 \-\- ')
+  }
+
+  return text
+}
+
+const dir = fs.opendirSync(pdfPath)
 
 personInfoList = []
 
@@ -57,6 +70,11 @@ while ((dirent = dir.readSync()) !== null) {
     text = text.replace(/年齡：\s+/gm, '年齡：')
     text = text.replace(/核酸檢測陽性日期：\s+/gm, '核酸檢測陽性日期：')
 
+    // Fix special case
+    text = fixSpecialCase(text)
+
+    console.log(text)
+
     // Clean space
     textList = text.split("\n");
     textList = textList.filter(text => text.trim().length != 0)
@@ -74,7 +92,7 @@ while ((dirent = dir.readSync()) !== null) {
     var reTraceStart = new RegExp('日期 時間 行程')
     var reTraceStart2 = new RegExp('二、 近期行程 :\s*')
     var reDateSpecial = new RegExp(/\d+月\d+\-/)
-    var reDate = new RegExp(/^\d+\s*月\d+\s*日\s+|^\d+\/\d+\/\d+|^\d+\/\d+/)
+    var reDate = new RegExp(/^\d+\s*月\d+\s*日\s+|^\d+\/\d+\/\d+|^\d+\/\d+|\d+月\d+-\d+日\s/)
     var reTime = new RegExp(/^(\d+:\d+|全天|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
 
     personInfo = {}
