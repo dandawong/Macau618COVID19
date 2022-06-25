@@ -73,7 +73,7 @@ while ((dirent = dir.readSync()) !== null) {
     // Fix special case
     text = fixSpecialCase(text)
 
-    console.log(text)
+    // console.log(text)
 
     // Clean space
     textList = text.split("\n");
