@@ -23,6 +23,10 @@ function fixSpecialCase(text) {
     text = text.replace(/6月15\-18日/gm, '6月15\-18日 \-\- ')
   }
 
+  if (text.includes('159-618')) {
+    text = text.replace('2022/06/234', '2022/06/23')
+  }
+
   return text
 }
 
