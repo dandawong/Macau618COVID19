@@ -7,6 +7,11 @@ const rePdfLink = new RegExp(/https:\/\/www\.ssm\.gov\.mo.*\.pdf/gm)
 
 var hrefList = []
 
+// Create output folder it not exist
+if (!fs.existsSync(outputFolder)){
+  fs.mkdirSync(outputFolder);
+}
+
 const request = https.get(targetUrl, function (res) {
   let htmlContent = '';
 
