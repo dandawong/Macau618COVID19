@@ -92,7 +92,7 @@ while ((dirent = dir.readSync()) !== null) {
     textList = textList.filter(text => text.trim().length != 0)
 
     // Parse data
-    var reCode = new RegExp(/個案編號: (\d*-\d*)/)
+    var reCode = new RegExp(/個案編號:|：\s*(\d*-\d*)/)
     var reLastUpdateDate = new RegExp(/更新日期: (\d*年\d*月\d*日)/)
     var reName = new RegExp(/姓名：\s*(.*)/)
     var reSex = new RegExp(/性別：\s*(.*)/)
