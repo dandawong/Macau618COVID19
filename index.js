@@ -35,6 +35,10 @@ function fixSpecialCase(text) {
     text = text.replace('澳門癗漢', '澳門𧙗漢')
   }
 
+  if (text.includes('238-618')) {
+    text = text.replace('2022/06/245', '2022/06/25')
+  }
+
   return text
 }
 
