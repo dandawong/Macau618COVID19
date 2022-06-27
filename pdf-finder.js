@@ -6,6 +6,7 @@ const outputFolder = 'pdf'
 const rePdfLink = new RegExp(/https:\/\/www\.ssm\.gov\.mo.*\.pdf/gm)
 
 var hrefList = []
+var fileList = []
 
 // Create output folder it not exist
 if (!fs.existsSync(outputFolder)){
@@ -26,6 +27,10 @@ const request = https.get(targetUrl, function (res) {
     // download pdf
     hrefList.forEach(function (url, index) {
       let filename = url.split('/').pop();
+
+      // add to fileList
+      fileList.push({fileName: filename, url: url})
+
       const file = fs.createWriteStream(outputFolder + '/' + filename);
       const request = https.get(url, function(response) {
          response.pipe(file);
@@ -36,5 +41,14 @@ const request = https.get(targetUrl, function (res) {
          });
       });
     })
+
+    // output fileList to json
+    fs.writeFile("./fileList.json", JSON.stringify(fileList, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      };
+      console.log("File List has been created");
+    });
   });
 });

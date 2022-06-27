@@ -38,9 +38,21 @@ function fixSpecialCase(text) {
   return text
 }
 
+// Load pdf folder
 const dir = fs.opendirSync(pdfPath)
 
+// Person info list
 personInfoList = []
+
+// Load file list json
+let fileListRaw = fs.readFileSync('fileList.json');
+const fileList = JSON.parse(fileListRaw);
+
+function getUrlByFileName(fileName) {
+  return fileList.filter(
+      function(data){ return data.fileName == fileName }
+  );
+}
 
 let dirent
 while ((dirent = dir.readSync()) !== null) {
@@ -51,6 +63,8 @@ while ((dirent = dir.readSync()) !== null) {
     continue;
   }
 
+  // get url
+  let url = getUrlByFileName(dirent.name)[0]['url']
   const fileName = dirent.name
 
   pdf(dataBuffer).then(function (data) {
@@ -105,9 +119,10 @@ while ((dirent = dir.readSync()) !== null) {
     var reTraceStart2 = new RegExp('二、 近期行程 :\s*')
     var reDateSpecial = new RegExp(/\d+月\d+\-/)
     var reDate = new RegExp(/^\d+\s*月\d+\s*日\s+|^\d+\/\d+\/\d+|^\d+\/\d+|\d+月\d+-\d+日\s/)
-    var reTime = new RegExp(/^(\d+:\d+|全天|中午\-晚上|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
+    var reTime = new RegExp(/^(\d+:\d+|全天|中午\-晚上|下午\-晚上|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
 
     personInfo = {}
+    personInfo.url = url
     personTrace = []
 
     let traceStart = false;
@@ -163,6 +178,7 @@ while ((dirent = dir.readSync()) !== null) {
         content = text
 
         if (content.trim().length > 0 && currentDate != null) {
+          // if (currentTime == null) console.log(text, fileName)
           let trace = {}
           trace.date = currentDate.trim()
           trace.time = currentTime.trim()
