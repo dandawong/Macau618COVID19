@@ -1,5 +1,6 @@
 const https = require('https'); // or 'https' for https:// URLs
 const fs = require('fs');
+const path = require('path');
 
 const targetUrl = 'https://www.ssm.gov.mo/apps1/content/ch/23555/grid.aspx?dlimit=0&withattach=true&header=false&footer=false'
 const outputFolder = 'pdf'
@@ -12,6 +13,16 @@ var fileList = []
 if (!fs.existsSync(outputFolder)){
   fs.mkdirSync(outputFolder);
 }
+
+// Clear all pdf file
+fs.readdir(outputFolder, (err, files) => {
+  if (err) throw err;
+  for (const file of files) {
+    fs.unlink(path.join(outputFolder, file), err => {
+      if (err) throw err;
+    });
+  }
+});
 
 const request = https.get(targetUrl, function (res) {
   let htmlContent = '';
