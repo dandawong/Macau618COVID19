@@ -127,7 +127,7 @@ while ((dirent = dir.readSync()) !== null) {
     var reTraceStart2 = new RegExp('二、 近期行程 :\s*')
     var reDateSpecial = new RegExp(/\d+月\d+\-/)
     var reDate = new RegExp(/^\d+\s*月\d+\s*日\s+|^\d+\/\d+\/\d+|^\d+\/\d+|\d+月\d+-\d+日\s/)
-    var reTime = new RegExp(/上午\s–\s中午|^(\d+:\d+|全天|中午\-晚上|下午\-晚上|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|早上|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
+    var reTime = new RegExp(/整天|上午\s–\s中午|^(\d+:\d+|全天|中午\-晚上|下午\-晚上|早上|--|\d+:\d+|中午|上午|下午|晚上|全日|早上|\d+:\d+\-\d+:\d+|\d+:\d+\-|\d*:\d*~\d*:\d*|早上至晚上|\d+:\d+至\d+:\d+)\s+/)
 
     personInfo = {}
     personInfo.url = url
