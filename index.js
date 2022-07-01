@@ -177,13 +177,13 @@ while ((dirent = dir.readSync()) !== null) {
         let date = text.match(reDate)
         if (date) {
           currentDate = date[0]
-          text = text.substring(currentDate.length)
+          text = text.substring(currentDate.length).trimStart()
         }
 
         let time = text.match(reTime)
         if (time) {
           currentTime = time[0]
-          text = text.substring(currentTime.length)
+          text = text.substring(currentTime.length).trimStart()
         }
 
         content = text
